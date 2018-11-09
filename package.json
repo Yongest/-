@@ -1,0 +1,24 @@
+{
+  "name": "DesktopApplicationDevelopment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yongest/-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yongest/-/issues"
+  },
+  "homepage": "https://github.com/Yongest/-#readme",
+  "devDependencies": {
+    "electron": "^3.0.8"
+  }
+}
