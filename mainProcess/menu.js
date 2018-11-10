@@ -1,4 +1,4 @@
-const {Menu,BrowserWindow,dialog} = require('electron')
+const {Menu,BrowserWindow,dialog,ipcMain} = require('electron')
 var path = require('path')
 
 // 构建具体的菜单顶
@@ -56,22 +56,24 @@ let template = [
             {
                 label:'字体增大',
                 accelerator:'F11',
-                click:function(){
-
+                // browserWindow就是我们当前的窗口对象
+                click:function(menuItem, win, event){
+                    // 主进程向渲染进程发送消息。因为menu.js就是在主进程中直接调用的的， 所以它也是主进程中的文件
+                    win.webContents.send('add')
                 }
             },
             {
                 label:'字体减小',
                 accelerator:'F12',
-                click:function(){
-                    
+                click:function(menuItem, win, event){
+                    win.webContents.send('sub')
                 }
             },
             {
                 label:'默认字体',
                 accelerator:'F10',
-                click:function(){
-                    
+                click:function(menuItem, win, event){
+                    win.webContents.send('default')
                 }
             }
         ]
@@ -104,7 +106,16 @@ function hm_setColor(){
         height:100,
         title:'选择颜色'
     })
+    // win.webContents.openDevTools()
     win.loadURL(path.join(__dirname,'../views/color.html'))
     // 设置不展示菜单项
     win.setMenu(null)
 }
+
+// 在主进程中监听渲染进程发送的显示右键菜单的消息
+ipcMain.on('hm_showContextMenu',(event) => {
+    // BrowserWindow.fromWebContents可以获取当前窗口对象
+    let win = BrowserWindow.fromWebContents(event.sender)
+    // 将此菜单作为 browserWindow 中的上下文菜单弹出
+    menu.popup(win)
+})
